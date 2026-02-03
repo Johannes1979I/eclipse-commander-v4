@@ -1,0 +1,113 @@
+{
+  "eclipses": [
+    {
+      "id": "2027-08-02",
+      "type": "total",
+      "date": "2027-08-02",
+      "name": "Eclissi Totale 2027 (Europa/Africa)",
+      "magnitude": 1.079,
+      "gamma": 0.1416,
+      "path": [
+        {"lat": 35.8, "lon": 5.8, "duration": 291, "location": "Tangeri, Marocco"},
+        {"lat": 37.1, "lon": 2.9, "duration": 265, "location": "Algeria"},
+        {"lat": 39.5, "lon": -1.2, "duration": 252, "location": "Valencia, Spagna"},
+        {"lat": 40.3, "lon": -3.7, "duration": 234, "location": "Madrid, Spagna"},
+        {"lat": 25.7, "lon": 32.6, "duration": 383, "location": "Luxor, Egitto"}
+      ],
+      "maxDuration": 383,
+      "pathWidthKm": 258
+    },
+    {
+      "id": "2024-04-08",
+      "type": "total",
+      "date": "2024-04-08",
+      "name": "Eclissi Totale 2024 (Nord America)",
+      "magnitude": 1.0566,
+      "gamma": 0.3431,
+      "path": [
+        {"lat": 25.3, "lon": -109.2, "duration": 268},
+        {"lat": 32.7, "lon": -99.8, "duration": 268},
+        {"lat": 41.6, "lon": -82.5, "duration": 227}
+      ],
+      "maxDuration": 273,
+      "pathWidthKm": 200
+    },
+    {
+      "id": "2026-08-12",
+      "type": "total",
+      "date": "2026-08-12",
+      "name": "Eclissi Totale 2026 (Artico)",
+      "magnitude": 1.0387,
+      "gamma": 0.8991,
+      "path": [
+        {"lat": 65.3, "lon": -29.8, "duration": 137},
+        {"lat": 69.8, "lon": -13.2, "duration": 145}
+      ],
+      "maxDuration": 145,
+      "pathWidthKm": 170
+    },
+    {
+      "id": "2028-07-22",
+      "type": "total",
+      "date": "2028-07-22",
+      "name": "Eclissi Totale 2028 (Australia)",
+      "magnitude": 1.0562,
+      "gamma": -0.7026,
+      "path": [
+        {"lat": -28.7, "lon": 98.5, "duration": 318},
+        {"lat": -24.8, "lon": 112.7, "duration": 321}
+      ],
+      "maxDuration": 321,
+      "pathWidthKm": 245
+    },
+    {
+      "id": "2030-11-25",
+      "type": "total",
+      "date": "2030-11-25",
+      "name": "Eclissi Totale 2030 (Africa/Australia)",
+      "magnitude": 1.0468,
+      "gamma": 0.2930,
+      "path": [
+        {"lat": -32.7, "lon": 45.2, "duration": 233},
+        {"lat": -25.8, "lon": 56.3, "duration": 241}
+      ],
+      "maxDuration": 241,
+      "pathWidthKm": 220
+    },
+    {
+      "id": "2024-10-02",
+      "type": "annular",
+      "date": "2024-10-02",
+      "name": "Eclissi Anulare 2024",
+      "magnitude": 0.9326,
+      "path": [
+        {"lat": -24.2, "lon": -135.7, "duration": 485}
+      ],
+      "maxDuration": 485
+    },
+    {
+      "id": "2027-02-06",
+      "type": "annular",
+      "date": "2027-02-06",
+      "name": "Eclissi Anulare 2027",
+      "magnitude": 0.9280,
+      "path": [
+        {"lat": -42.7, "lon": -72.5, "duration": 477},
+        {"lat": -31.8, "lon": -48.2, "duration": 481}
+      ],
+      "maxDuration": 481
+    },
+    {
+      "id": "2030-06-01",
+      "type": "annular",
+      "date": "2030-06-01",
+      "name": "Eclissi Anulare 2030",
+      "magnitude": 0.9440,
+      "path": [
+        {"lat": 38.2, "lon": 72.3, "duration": 321},
+        {"lat": 45.7, "lon": 95.8, "duration": 324}
+      ],
+      "maxDuration": 324
+    }
+  ]
+}
