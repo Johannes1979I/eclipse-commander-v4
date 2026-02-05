@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Eclipse Commander - Applicazione professionale per fotografia eclissi solari">
+    <meta name="theme-color" content="#0a0e1a">
+    <title>Eclipse Commander 2027</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Ccircle cx='256' cy='256' r='200' fill='%230a0e1a'/%3E%3Ccircle cx='320' cy='256' r='180' fill='%233b82f6'/%3E%3Ccircle cx='300' cy='256' r='160' fill='%230a0e1a'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="app-header">
+        <h1 class="app-title">🌑 Eclipse Commander 2027</h1>
+        <p class="app-version">v3.1.0 - Complete Edition</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- Mode Selector -->
+        <section class="mode-selector" id="modeSelector">
+            <button class="mode-button active" id="btnEclipseMode" data-mode="eclipse">
+                <span class="icon">🌑</span>
+                <span>MODALITÀ ECLISSI</span>
+                <small>Database + Timer + Allarmi Sonori</small>
+            </button>
+            <button class="mode-button" id="btnSolarMode" data-mode="solar">
+                <span class="icon">☀️</span>
+                <span>MODALITÀ FOTO SOLARE</span>
+                <small>Timing Ottimale + Parametri</small>
+            </button>
+        </section>
+
+        <!-- ECLIPSE MODE -->
+        <div id="eclipseMode" class="mode-content">
+            
+            <!-- Location Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span>📍</span> Località Osservazione
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" id="btnGetGPS">
+                            📡 Ottieni Posizione GPS
+                        </button>
+                    </div>
+                    <div id="locationDisplay" class="hidden">
+                        <div class="alert alert-success">
+                            <strong id="locationName">—</strong><br>
+                            <small>Lat: <span id="locationLat">—</span>° | Lon: <span id="locationLon">—</span>°</small>
+                        </div>
+                    </div>
+                    <div class="form-group mt-2">
+                        <button class="btn btn-secondary btn-block" id="btnManualLocation">
+                            ✏️ Inserimento Manuale
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Eclipse Selector -->
+            <div class="card">
+                <div class="card-header">
+                    <span>🌑</span> Selezione Eclissi
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">Seleziona Eclissi:</label>
+                        <select class="form-select" id="eclipseSelect">
+                            <option value="">Caricamento...</option>
+                        </select>
+                    </div>
+                    <div id="eclipseInfo" class="hidden mt-2"></div>
+                </div>
+            </div>
+
+            <!-- Equipment Configuration -->
+            <div class="card">
+                <div class="card-header">
+                    <span>🔭</span> Configurazione Equipment
+                </div>
+                <div class="card-body">
+                    <!-- Camera Selection -->
+                    <div class="form-group">
+                        <label class="form-label">📷 Camera:</label>
+                        <select class="form-select" id="cameraSelect">
+                            <option value="">Seleziona camera...</option>
+                            <optgroup label="🔷 ZWO ASI CMOS Raffreddate">
+                                <option value="asi294mc-pro">ASI294MC Pro (4/3", 4.63µm)</option>
+                                <option value="asi183mm-pro">ASI183MM Pro (1", 2.4µm)</option>
+                                <option value="asi2600mc-pro">ASI2600MC Pro (APS-C, 3.76µm)</option>
+                            </optgroup>
+                            <optgroup label="🔶 QHY CMOS Raffreddate">
+                                <option value="qhy268m">QHY268M (APS-C, 3.76µm)</option>
+                                <option value="qhy600m">QHY600M (FF, 3.76µm)</option>
+                            </optgroup>
+                            <optgroup label="📷 Canon DSLR">
+                                <option value="canon-6d">Canon EOS 6D (FF, 6.55µm)</option>
+                                <option value="canon-90d">Canon EOS 90D (APS-C, 3.19µm)</option>
+                                <option value="canon-ra">Canon EOS Ra Astro (FF, 5.36µm)</option>
+                            </optgroup>
+                            <optgroup label="📷 Nikon DSLR">
+                                <option value="nikon-d750">Nikon D750 (FF, 5.97µm)</option>
+                                <option value="nikon-d850">Nikon D850 (FF, 4.35µm)</option>
+                            </optgroup>
+                            <optgroup label="⚙️ Custom">
+                                <option value="custom">Configurazione Manuale...</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <!-- Telescope -->
+                    <div class="form-group">
+                        <label class="form-label">🔭 Diametro Ottica (mm):</label>
+                        <input type="number" class="form-input" id="inputDiameter" placeholder="es. 55" min="10" max="5000">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">🔭 Focale (mm):</label>
+                        <input type="number" class="form-input" id="inputFocal" placeholder="es. 200" min="50" max="10000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-success btn-block" id="btnSaveEquipment">
+                            💾 Salva Equipment
+                        </button>
+                    </div>
+                    <div id="equipmentInfo" class="hidden mt-2"></div>
+                </div>
+            </div>
+
+            <!-- ⭐ COUNTDOWN DISPLAY CON FILTRO INDICATOR ⭐ -->
+            <div id="countdownCard" class="card countdown-card hidden">
+                <div class="card-header">
+                    <span>⏱️</span> Countdown Eclissi LIVE
+                </div>
+                <div class="card-body">
+                    <div class="countdown-display">
+                        <div class="countdown-time" id="countdownTime">000:00:00:00</div>
+                        <div class="countdown-label" id="countdownLabel">In attesa...</div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                    
+                    <!-- ⭐ FILTRO INDICATOR - GRANDE E VISIBILE ⭐ -->
+                    <div id="filterIndicator" class="filter-indicator hidden">
+                        🔴 FILTRO SOLARE ON
+                    </div>
+                    
+                    <!-- Current Phase -->
+                    <div id="currentPhase" class="current-phase hidden">
+                        <strong>Fase Corrente:</strong> <span id="phaseText">Pre-eclissi</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Times Timeline -->
+            <div id="contactTimesCard" class="card hidden">
+                <div class="card-header">
+                    <span>📅</span> Timeline Eventi
+                </div>
+                <div class="card-body">
+                    <div id="contactTimes" class="contact-times"></div>
+                </div>
+            </div>
+            
+            <!-- ⭐ STANDALONE MODE - GUIDA COMPLETA ⭐ -->
+            <div id="standaloneCard" class="card hidden">
+                <div class="card-header">
+                    <span>📋</span> Guida Scatti Manuale (Standalone)
+                </div>
+                <div class="card-body">
+                    <p><strong>Modalità Standalone Attiva</strong> - Segui la timeline sopra e gli allarmi sonori.</p>
+                    <div id="standaloneGuide">
+                        <h4>🎯 Checklist Pre-Eclissi:</h4>
+                        <ul>
+                            <li>✅ Filtro solare montato e verificato</li>
+                            <li>✅ Fotocamera collegata e testata</li>
+                            <li>✅ Batterie cariche (+ batterie spare)</li>
+                            <li>✅ Memoria SD formattata</li>
+                            <li>✅ Fuoco pre-impostato (manuale)</li>
+                            <li>✅ Esposizione testata con filtro</li>
+                            <li>✅ Treppiede stabile</li>
+                            <li>✅ Allarmi audio test (click pulsante GPS)</li>
+                        </ul>
+                        
+                        <h4>⚠️ Allarmi Automatici Programmati:</h4>
+                        <ul>
+                            <li>🔔 <strong>C2 -30s:</strong> PREPARATI A RIMUOVERE FILTRO (beep 1x)</li>
+                            <li>🔔 <strong>C2 -10s:</strong> MANO SUL FILTRO (beep 2x)</li>
+                            <li>🚨 <strong>C2 0s:</strong> RIMUOVI FILTRO ORA! (beep 3x + vibrazione + notifica)</li>
+                            <li>🔔 <strong>C3 -10s:</strong> PREPARATI AD APPLICARE FILTRO (beep 2x)</li>
+                            <li>🚨 <strong>C3 0s:</strong> APPLICA FILTRO ORA! (beep 3x + vibrazione + notifica)</li>
+                        </ul>
+                        
+                        <h4>📸 Parametri Consigliati per Fase:</h4>
+                        <div id="standaloneParams">
+                            <p><strong>C1 → C2 (Parziale Crescente):</strong></p>
+                            <ul>
+                                <li>ISO: 100</li>
+                                <li>Shutter: 1/1000s</li>
+                                <li>Filtro: ON (obbligatorio!)</li>
+                                <li>Scatti: Ogni 5-10 minuti</li>
+                            </ul>
+                            
+                            <p><strong>C2 → C3 (TOTALITÀ):</strong></p>
+                            <ul>
+                                <li><strong>⚠️ RIMUOVI FILTRO!</strong></li>
+                                <li>ISO: 400-800</li>
+                                <li><strong>Bracketing Corona:</strong> 1/4000, 1/2000, 1/1000, 1/500, 1/250, 1/125, 1/60s</li>
+                                <li><strong>Bracketing Lunga:</strong> 1/30, 1/15, 1/8, 1/4, 1/2, 1s, 2s, 4s</li>
+                                <li><strong>Prominenze:</strong> 1/2000, 1/1000, 1/500s</li>
+                                <li>Scatta continuamente!</li>
+                            </ul>
+                            
+                            <p><strong>C3 → C4 (Parziale Decrescente):</strong></p>
+                            <ul>
+                                <li><strong>🔴 APPLICA FILTRO!</strong></li>
+                                <li>ISO: 100</li>
+                                <li>Shutter: 1/1000s</li>
+                                <li>Filtro: ON (obbligatorio!)</li>
+                                <li>Scatti: Ogni 5-10 minuti</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Platform Connection -->
+            <div class="card">
+                <div class="card-header">
+                    <span>🔌</span> Connessione Piattaforma (Opzionale)
+                </div>
+                <div class="card-body">
+                    <p class="text-muted"><small>Connetti a N.I.N.A. o Ekos per sequenze automatiche, oppure usa modalità standalone sopra.</small></p>
+                    
+                    <div class="flex gap-2">
+                        <button class="btn btn-secondary flex-1" id="btnConnectEkos">
+                            🔌 Ekos/INDI
+                        </button>
+                        <button class="btn btn-secondary flex-1" id="btnConnectNina">
+                            🔌 N.I.N.A.
+                        </button>
+                    </div>
+                    
+                    <!-- Manual Connection -->
+                    <div class="form-group mt-2">
+                        <label class="form-label">
+                            <input type="checkbox" id="chkManualConnection" style="margin-right: 8px;">
+                            Connessione Manuale
+                        </label>
+                    </div>
+                    
+                    <div id="manualConnectionDiv" class="hidden">
+                        <div class="form-group">
+                            <label class="form-label">Host:</label>
+                            <input type="text" class="form-input" id="inputHost" placeholder="localhost" value="localhost">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Porta:</label>
+                            <input type="number" class="form-input" id="inputPort" placeholder="8624 (Ekos) / 1888 (N.I.N.A.)" value="8624">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" id="btnConnectManual">
+                                🔗 Connetti
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="connectionStatus" class="mt-2 hidden"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ⭐ SOLAR MODE - TIMING COMPLETO ⭐ -->
+        <div id="solarMode" class="mode-content hidden">
+            
+            <div class="card">
+                <div class="card-header">
+                    <span>☀️</span> Posizione Sole in Tempo Reale
+                </div>
+                <div class="card-body">
+                    <div class="eclipse-info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Altitudine</div>
+                            <div class="info-value" id="solarAltitude">—</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Azimuth</div>
+                            <div class="info-value" id="solarAzimuth">—</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Ora Locale</div>
+                            <div class="info-value" id="solarTime">—</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block mt-2" id="btnCalculateSolar">
+                        🔄 Aggiorna Posizione
+                    </button>
+                    
+                    <!-- ⭐ TIMING ADVICE ⭐ -->
+                    <div id="solarTimingAdvice" class="mt-2 hidden">
+                        <div class="alert">
+                            <h4 id="timingTitle">📊 Condizioni Seeing:</h4>
+                            <p id="timingMessage">Calcola posizione per consigli...</p>
+                            <p><strong id="timingRecommendation"></strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>🎚️</span> Parametri Scatto Solare
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">Tipo Filtro:</label>
+                        <select class="form-select" id="filterType">
+                            <option value="nd5">ND5 (100.000x) - White Light</option>
+                            <option value="halpha">H-alpha (656nm)</option>
+                            <option value="cak">Calcium K (393nm)</option>
+                        </select>
+                    </div>
+                    
+                    <div id="solarParams" class="mt-2">
+                        <h4>📸 Parametri Consigliati:</h4>
+                        <div id="filterParamsND5">
+                            <p><strong>Filtro ND5 (White Light):</strong></p>
+                            <ul>
+                                <li>ISO: 100-400</li>
+                                <li>Esposizione: 1/500 - 1/2000s</li>
+                                <li>Apertura: f/8 - f/11 (ottimale)</li>
+                                <li>Messa a fuoco: Manuale su sole</li>
+                                <li>Tipo: Macchie solari, granulazione</li>
+                            </ul>
+                        </div>
+                        <div id="filterParamsHalpha" class="hidden">
+                            <p><strong>Filtro H-alpha (656nm):</strong></p>
+                            <ul>
+                                <li>ISO: 400-800</li>
+                                <li>Esposizione: 1/100 - 1/500s</li>
+                                <li>Apertura: f/5.6 - f/8</li>
+                                <li>Tipo: Macchie, prominenze, filamenti</li>
+                                <li>Note: Contrasto regolabile</li>
+                            </ul>
+                        </div>
+                        <div id="filterParamsCaK" class="hidden">
+                            <p><strong>Filtro Calcium K (393nm):</strong></p>
+                            <ul>
+                                <li>ISO: 800-1600</li>
+                                <li>Esposizione: 1/50 - 1/200s</li>
+                                <li>Apertura: f/5.6 - f/8</li>
+                                <li>Tipo: Network cromosfera</li>
+                                <li>Note: Esposizione più lunga</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Solar Timelapse -->
+            <div class="card">
+                <div class="card-header">
+                    <span>🎬</span> Time-lapse Solare
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">Intervallo (secondi):</label>
+                        <input type="number" class="form-input" id="inputInterval" placeholder="60" value="60" min="10" max="600">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Durata (minuti):</label>
+                        <input type="number" class="form-input" id="inputDuration" placeholder="30" value="30" min="5" max="480">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success btn-block" id="btnStartTimelapse">
+                            ▶️ Avvia Time-lapse
+                        </button>
+                    </div>
+                    <div id="timelapseStatus" class="hidden mt-2"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Modal Manual Location -->
+    <div class="modal" id="modalManualLocation">
+        <div class="modal-content">
+            <span class="modal-close" id="closeManualLocation">&times;</span>
+            <h2 class="modal-header">Inserimento Manuale Località</h2>
+            <div class="form-group">
+                <label class="form-label">Latitudine (°):</label>
+                <input type="number" class="form-input" id="manualLat" placeholder="es. 44.1393" step="0.0001" min="-90" max="90">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Longitudine (°):</label>
+                <input type="number" class="form-input" id="manualLon" placeholder="es. 12.2433" step="0.0001" min="-180" max="180">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Nome Località (opzionale):</label>
+                <input type="text" class="form-input" id="manualName" placeholder="es. Cesena, Italy">
+            </div>
+            <button class="btn btn-success btn-block" id="btnSaveManualLocation">
+                💾 Salva Località
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/eclipse-database.js"></script>
+    <script src="js/core/astronomy-calculator.js"></script>
+    <script src="js/core/location-manager.js"></script>
+    <script src="js/core/time-calculator.js"></script>
+    <script src="js/equipment/equipment-database.js"></script>
+    <script src="js/equipment/telescope-manager.js"></script>
+    <script src="js/equipment/exposure-optimizer.js"></script>
+    <script src="js/platforms/ekos-connector.js"></script>
+    <script src="js/platforms/nina-connector.js"></script>
+    <script src="js/platforms/platform-adapter.js"></script>
+    <script src="js/platforms/device-detector.js"></script>
+    <script src="js/modes/eclipse-mode.js"></script>
+    <script src="js/modes/solar-mode.js"></script>
+    <script src="js/modes/standalone-mode.js"></script>
+    <script src="js/ui/notification-manager.js"></script>
+    <script src="js/ui/countdown-display.js"></script>
+    <script src="js/ui/mode-switcher.js"></script>
+    <script src="js/ui/location-panel.js"></script>
+    <script src="js/ui/eclipse-selector.js"></script>
+    <script src="js/ui/equipment-panel.js"></script>
+    <script src="js/ui/settings-panel.js"></script>
+    <script src="js/ui/ui-controller.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(console.error);
+            });
+        }
+        
+        // Debug - verifica caricamento
+        window.addEventListener('load', function() {
+            console.log('=== ECLIPSE COMMANDER v3.1.0 COMPLETE ===');
+            console.log('✓ Countdown with alarms ready');
+            console.log('✓ Filter indicator ready');
+            console.log('✓ Standalone mode ready');
+            console.log('✓ Solar timing ready');
+            
+            // Handler filtro solare params
+            const filterSelect = document.getElementById('filterType');
+            if (filterSelect) {
+                filterSelect.addEventListener('change', function(e) {
+                    document.getElementById('filterParamsND5').classList.add('hidden');
+                    document.getElementById('filterParamsHalpha').classList.add('hidden');
+                    document.getElementById('filterParamsCaK').classList.add('hidden');
+                    
+                    if (e.target.value === 'nd5') {
+                        document.getElementById('filterParamsND5').classList.remove('hidden');
+                    } else if (e.target.value === 'halpha') {
+                        document.getElementById('filterParamsHalpha').classList.remove('hidden');
+                    } else if (e.target.value === 'cak') {
+                        document.getElementById('filterParamsCaK').classList.remove('hidden');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
